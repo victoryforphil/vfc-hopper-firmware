@@ -24,7 +24,7 @@ int telem_init(void){
     usart_enable(USART1);
 
 
-    dma_stream_reset(DMA1, )
+    //dma_stream_reset(DMA1, )
     
 }
 
