@@ -2,10 +2,14 @@
 #include "actions/actions.h"
 #include "actions/hover.h"
 
-
+#include "../utils/logging.h"
 void act_hover_begin(VFCHoverParams params){
     VFC_State* state = vfc_state_get();
     VFCHoverState hover_state = {0};
+
+    
+    log_info("Action_Hover" , "task", "Starting Hover: {params.height}");
+    
     while(!hover_state.finished && !hover_state.failed){
 
         uint8_t target = params.height;
