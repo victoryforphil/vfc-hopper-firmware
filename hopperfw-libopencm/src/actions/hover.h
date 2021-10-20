@@ -1,5 +1,7 @@
 #ifndef _VFC_ACTION_HOVER_H_
 #define _VFC_ACTION_HOVER_H_
+#include <libopencm3/stm32/rcc.h>
+#include
 /*
 Action Desc: Command the UAV to hover at a desired height and maitain position
 
@@ -10,25 +12,26 @@ Action Params:
     - margin: how close to the desired height to be considered at the desired height
 */
 
-struct VFCHoverParams_t{
+typedef struct VFCHoverParams_t{
     float height;
     float hold_duration;
     float speed;
     float margin;
-};
+}VFCHoverParams;
 
-struct VFCHoverState_t{
+typedef struct VFCHoverState_t{
     float height;
     float delta;
     float speed;
     bool finished;
     bool failed;
     bool holding;
-}
+}VFCHoverState;
 
-uint8_t act_hover_tick(VFCHoverParams_t params, VFCHoverState_t *state, float dt);
+void act_hover_begin(VFCHoverParams params);
 
-VFCHoverState_t act_hover_
+uint8_t act_hover_tick(VFCHoverParams params, VFCHoverState *state, float dt);
+
 
 
 #endif;

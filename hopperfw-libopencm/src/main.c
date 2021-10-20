@@ -3,6 +3,7 @@
 #include <libopencm3/stm32/dma.h>
 #include "hardware/px4flow.h"
 #include "hardware/telemetry.h"
+
 static void clock_setup(void){
 
     rcc_clock_setup_pll(&rcc_hse_8mhz_3v3[RCC_CLOCK_3V3_168MHZ]);
@@ -20,14 +21,11 @@ int main(void){
     
     px4flow_init();
     telem_init();
+
+
     while (1) {
 
-        telem_log_info("Hello World \n", 5);
-
-        for(uint16_t i =0; i<5000;i++){
-            __asm__("NOP");
-        }
-
+       
 		
 	}
 

@@ -2,6 +2,7 @@
     "files.associations": {
         "i2c.h": "c",
         "nvic.h": "c",
-        "rcc.h": "c"
+        "rcc.h": "c",
+        "state.h": "c"
     }
 }
