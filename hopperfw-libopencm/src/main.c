@@ -2,6 +2,7 @@
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/dma.h>
 #include <libopencm3/stm32/timer.h>
+#include <string.h>
 #include "hardware/px4flow.h"
 #include "hardware/telemetry.h"
 #include "hardware/pwm.h"
@@ -9,6 +10,15 @@
 #include <libopencm3/cm3/nvic.h>
 #include "systems/motors.h"
 #include "hardware/hwsleep.h"
+#include "FreeRTOS.h"
+#include "task.h"
+
+void vApplicationStackOverflowHook(
+	TaskHandle_t xTask __attribute__((unused)),
+    char *pcTaskName __attribute__((unused))) {
+
+	for (;;);
+}
 
 static void clock_setup(void){
 
@@ -27,18 +37,18 @@ static void clock_setup(void){
 }
 int main(void){
     clock_setup();
-    hw_sleep_init();
-    hw_sleep_ms(3000);
+    vTaskDelay();
 
     vfc_motor_init(5);
     
     //px4flow_init();
-    //telem_init();
-
+    telem_init();
+    vTaskStartScheduler();
     float tick = 0.0;
     float delta = 0.015;
     while (1) {
         hw_sleep_ms(100);
+        telem_log_info("Hello World\n");
         vfc_motor_set_speed_all(tick);
         vfc_motor_tick();
         tick += delta;

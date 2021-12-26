@@ -2,11 +2,13 @@
 volatile uint32_t system_millis;
 
 /* Called when systick fires */
+/*
 void sys_tick_handler(void)
 {
 	system_millis++;
 }
 
+*/
 /* sleep for delay milliseconds */
 void hw_sleep_ms(uint32_t delay)
 {

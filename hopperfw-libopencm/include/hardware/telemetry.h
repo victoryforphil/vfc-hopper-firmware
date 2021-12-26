@@ -5,6 +5,6 @@
 #define TELEM_BUFFER_SIZE 1024
 
 int telem_init(void);
-int telem_log_info(char*, uint32_t);
+void telem_log_info(char*);
 
 #endif
