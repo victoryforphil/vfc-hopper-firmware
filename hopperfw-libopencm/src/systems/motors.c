@@ -1,7 +1,10 @@
 #include "systems/motors.h"
 //#include "../utils/logging.h"
-#include "hardware/hwsleep.h"
+
 #include "hardware/pwm.h"
+
+#include "FreeRTOS.h"
+#include "task.h"
 static VFC_MotorState _motor_state = {0};
 
 void vfc_motor_init(uint8_t wait)
@@ -18,7 +21,8 @@ void vfc_motor_init(uint8_t wait)
 
     // log_info("Motors", "init", "Waiting for ESC's (fixed time) ");
 
-    hw_sleep_ms(wait * 1000);
+    //hw_sleep_ms(wait * 1000);
+    vTaskDelay(pdMS_TO_TICKS(wait * 1000));
 
     // log_success("Motors", "init", "ESC's are ready");
 }
@@ -26,10 +30,10 @@ void vfc_motor_init(uint8_t wait)
 void vfc_motor_task()
 {
     // log_info("Motors", "task", "Starting RTOS Task");
-    while (1)
+    for (;;)
     {
         vfc_motor_tick();
-        hw_sleep_ms(10);
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 

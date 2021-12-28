@@ -35,29 +35,50 @@ static void clock_setup(void){
     rcc_periph_clock_enable(RCC_USART1);
     rcc_periph_clock_enable(RCC_TIM1);
 }
-int main(void){
-    clock_setup();
-    vTaskDelay();
-
-    vfc_motor_init(5);
-    
-    //px4flow_init();
-    telem_init();
-    vTaskStartScheduler();
-    float tick = 0.0;
+static void task_test(void* pvParams){ 
+    float tick = 0.6;
     float delta = 0.015;
-    while (1) {
-        hw_sleep_ms(100);
-        telem_log_info("Hello World\n");
+    for(;;){
+        
         vfc_motor_set_speed_all(tick);
-        vfc_motor_tick();
         tick += delta;
         if(tick > 1.0){
             delta = -delta;
         }else if(tick < 0){
             delta = -delta;
         }
-		
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
+static void task_init(void *pvParams){
+  
+   
+    //telem_init();
+    
+    
+}
+
+
+
+
+
+int main(void){
+      clock_setup();
+    //systick_counter_enable();
+	/* this done last */
+	//systick_interrupt_enable();
+     vfc_motor_init(2);
+    TaskHandle_t xHandle = NULL;
+    //xTaskCreate(task_init, "InitTask", 64, NULL, 2, NULL);
+     //xTaskCreate(task_test, "TestTask", 128, NULL, 4, NULL);
+     xTaskCreate(vfc_motor_task, "MotorTask", 100, NULL, 3, NULL);
+     
+    //px4flow_init();
+    
+    vTaskStartScheduler();
+   
+    while (1) {
+        
 	}
 
 
